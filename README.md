@@ -1,2 +1,2 @@
 # dotfiles
-My linux dot files
+List of my current dot files for Arch Linux with i3wm-gaps.
