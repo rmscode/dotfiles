@@ -9,5 +9,6 @@
 	del = branch -D
 	cob = checkout -b
 	swb = switch -b
+    done = !git push origin HEAD
 	mkdone = !git push origin HEAD && pwsh -Command Update-MyDocs
 	lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
