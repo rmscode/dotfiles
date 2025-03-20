@@ -1,0 +1,13 @@
+[alias]
+	st = status
+	sw = switch
+	co = checkout
+	br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	ci = commit
+	cm = commit -m
+	last = log -1 HEAD
+	del = branch -D
+	cob = checkout -b
+	swb = switch -b
+	mkdone = !git push origin HEAD && !Update-MyDocs
+	lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
