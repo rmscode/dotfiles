@@ -1,0 +1,1 @@
+This is basically a copy and paste of the config from https://github.com/gitalias with very few modifications.
