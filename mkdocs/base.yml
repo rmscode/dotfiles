@@ -1,0 +1,75 @@
+# Material theme configuration
+theme:
+  name: material
+  features:
+    - content.code.annotate
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - navigation.top
+    # - navigation.prune
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
+
+# Plugins
+plugins:
+  - mkdocs-audio
+  - tags
+  - autolinks
+  - search
+  - offline
+  - meta:
+      enabled: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+      timezone: America/New_York
+      exclude:
+        - index.md
+        - notes/20**.md
+
+# Extensions
+markdown_extensions:
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tilde
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  #- pymdownx.smartsymbols
+  - abbr
+  - admonition
+  - def_list
+  - attr_list
+  - md_in_html
+  - footnotes  
+  - toc:
+      permalink: "⚓︎"
+      permalink_title: "Direct link"
+      toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
