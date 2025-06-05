@@ -25,10 +25,25 @@ function nano {
     C:\Progra~1\Git\usr\bin\nano.exe --ignorercfiles $args
 }
 
-# activate python virtual environment
-function pyv {
+# create python virtual environment
+function pve {
     try {
-        $venvPath = Get-Location | Join-Path -ChildPath ".\venv\Scripts\activate.ps1"
+        $venvPath = Get-Location | Join-Path -ChildPath "\.venv"
+        if (Test-Path $venvPath) {
+            Write-Host "It looks like a Python virtual environment already exists at $venvPath"
+        } else {
+			& python -m venv .venv & Write-Host "A Python virtual environment has been created at $venvPath"
+		}
+	} catch {
+        Write-Host "Error creating virtual environment: $_"
+    }
+}
+
+
+# activate python virtual environment
+function pva {
+    try {
+        $venvPath = Get-Location | Join-Path -ChildPath "\.venv\Scripts\activate.ps1"
         if (Test-Path $venvPath) {
             & $venvPath
         } else {
@@ -37,4 +52,9 @@ function pyv {
     } catch {
         Write-Host "Error activating virtual environment: $_"
     }
+}
+
+# deactivate python virtual environment
+function pvd {
+	deactivate
 }
