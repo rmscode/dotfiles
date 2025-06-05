@@ -32,7 +32,9 @@ function pve {
         if (Test-Path $venvPath) {
             Write-Host "It looks like a Python virtual environment already exists at $venvPath"
         } else {
-			& python -m venv .venv & Write-Host "A Python virtual environment has been created at $venvPath"
+			write-Host "Creating Python virtual environment . . ."
+			python -m venv .venv
+			Write-Host "`nA Python virtual environment has been created at $venvPath"
 		}
 	} catch {
         Write-Host "Error creating virtual environment: $_"
