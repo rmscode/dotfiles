@@ -47,7 +47,9 @@ function pva {
     try {
         $venvPath = Get-Location | Join-Path -ChildPath "\.venv\Scripts\activate.ps1"
         if (Test-Path $venvPath) {
+			Write-Host "Activating the Python virtual environment"
             & $venvPath
+			Write-Host "`nPython virtual environment activated"
         } else {
             Write-Host "No Python virtual environment found at $venvPath"
         }
@@ -59,4 +61,5 @@ function pva {
 # deactivate python virtual environment
 function pvd {
 	deactivate
+	Write-Host "Python virtual environment deactivated"
 }
