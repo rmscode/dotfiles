@@ -25,36 +25,37 @@ function nano {
     C:\Progra~1\Git\usr\bin\nano.exe --ignorercfiles $args
 }
 
+# activate or create and activate python virtual environment
 # create python virtual environment
 function pve {
     try {
-        $venvPath = Get-Location | Join-Path -ChildPath "\.venv"
-        if (Test-Path $venvPath) {
-            Write-Host "It looks like a Python virtual environment already exists at $venvPath"
-        } else {
-			write-Host "Creating Python virtual environment . . ."
-			python -m venv .venv
-			Write-Host "`nA Python virtual environment has been created at $venvPath"
-		}
-	} catch {
-        Write-Host "Error creating virtual environment: $_"
-    }
-}
+        $currentDir = Get-Location
+        $venvDotPath = Join-Path $currentDir ".venv"
+        $venvPath = Join-Path $currentDir "venv"
+		$venvDotActivate = Join-Path $venvDotPath "\Scripts\activate.ps1"
+		$venvActivate = Join-Path $venvPath "\Scripts\activate.ps1"
 
-
-# activate python virtual environment
-function pva {
-    try {
-        $venvPath = Get-Location | Join-Path -ChildPath "\.venv\Scripts\activate.ps1"
-        if (Test-Path $venvPath) {
-			Write-Host "Activating the Python virtual environment"
-            & $venvPath
-			Write-Host "`nPython virtual environment activated"
+        if (Test-Path $venvDotPath) {
+            Write-Host "The following Python virtual environment was found:`n`n$venvDotPath. `n`nActivating..."
+			& $venvDotActivate
+        } elseif (Test-Path $venvPath) {
+            $response = Read-Host "The following Python virtual environment was found:`n`n$venvPath `n`nWould you like to rename it to .venv before activating? [y/n]"
+            if ($response -eq 'y') {
+                Rename-Item -Path $venvPath -NewName ".venv"
+                Write-Host "Changes made. Activating..."
+				& $venvDotActivate
+            } else {
+                Write-Host "No changes made. Activating..."
+				& $venvActivate
+            }
         } else {
-            Write-Host "No Python virtual environment found at $venvPath"
+            Write-Host "No Python virtual environment was found. Creating..."
+            python -m venv .venv
+            Write-Host "`nThe following Python virtual environment has been created:`n`n$venvDotPath `n`nActivating..."
+			& $venvDotActivate
         }
     } catch {
-        Write-Host "Error activating virtual environment: $_"
+        Write-Host "Error creating virtual environment: $_"
     }
 }
 
