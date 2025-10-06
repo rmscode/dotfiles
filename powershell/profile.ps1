@@ -64,3 +64,70 @@ function pvd {
 	deactivate
 	Write-Host "Python virtual environment deactivated"
 }
+
+# Find Path MTU
+function Find-PathMTU {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$TargetHost
+    )
+
+    function Test-MTU {
+        param (
+            [int]$Size
+        )
+        $result = ping $TargetHost -f -l $Size -n 1
+        if ($result -match "Packet needs to be fragmented but DF set.") {
+            Write-Host "Trying MTU size $Size...Too large. Packet needs to be fragmented but DF set." -ForegroundColor Yellow
+            return $false
+        } elseif ($result -match "Reply from") {
+            Write-Host "Trying MTU size $Size...Success."
+            return $true
+        } else {
+            Write-Verbose "Unexpected ping result for size $Size"
+            return $false
+        }
+    }
+
+    Write-Host "Starting Path MTU Discovery to $TargetHost..."
+
+    $mtu = 1500
+    $max = 2000
+
+    # Step 1: Increase by 100
+    while ($mtu -le $max) {
+        if (Test-MTU -Size $mtu) {
+            $mtu += 100
+        } else {
+            $mtu -= 100
+            break
+        }
+    }
+
+    # Step 2: Increase by 10
+    while ($true) {
+        if (Test-MTU -Size $mtu) {
+            $mtu += 10
+        } else {
+            $mtu -= 10
+            break
+        }
+    }
+
+    # Step 3: Increase by 1
+    while ($true) {
+        if (Test-MTU -Size $mtu) {
+            $mtu += 1
+        } else {
+            $mtu -= 1
+            break
+        }
+    }
+
+    Write-Host "Final check at MTU size $mtu..."
+    if (Test-MTU -Size $mtu) {
+        Write-Host "Path MTU to $TargetHost is $mtu bytes."
+    } else {
+        Write-Host "Path MTU to $TargetHost is $($mtu - 1) bytes."
+    }
+}
